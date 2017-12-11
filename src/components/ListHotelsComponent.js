@@ -10,37 +10,41 @@ import {
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { fetchData } from '../actions/actions';
+import { connect } from 'react-redux';
 
-const hotels = [
-    {
-        name: "Hotel Emperador",
-        stars: 3,
-        image: "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg",
-        // images: [
-        //     "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg"
-        // ],
-        price: "1596"
-    },
-    {
-        name: "Hotel Intercontinental",
-        stars: 5,
-        image: "https://e.otcdn.com/headers/ilusion/img/hoteles_destinia.jpg",
-        // images: [
-        //     "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg"
-        // ],
-        price: "2500"
-    }
-];
+// const hotels = [
+//     {
+//         name: "Hotel Emperador 2",
+//         stars: 3,
+//         image: "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg",
+//         // images: [
+//         //     "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg"
+//         // ],
+//         price: "1596"
+//     },
+//     {
+//         name: "Hotel Intercontinental",
+//         stars: 5,
+//         image: "https://e.otcdn.com/headers/ilusion/img/hoteles_destinia.jpg",
+//         // images: [
+//         //     "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg"
+//         // ],
+//         price: "2500"
+//     }
+// ];
 
 
 
-export default class ListHotelsComponent extends Component {
+class ListHotelsComponent extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        
+        
         this.state = {
             text: '',
-            data: hotels
+            hotels: []
         }
     }
 
@@ -48,29 +52,30 @@ export default class ListHotelsComponent extends Component {
         headerVisible: false
     }
 
-    filter(text) {
-        const data = hotels;
-        const newData = data.filter(function (item) {
+    componentWillMount() {
+        this.props.fetchData();
+    }
+
+    filter(text) {        
+        const { hotels } = this.props.dataHotels.data;        
+        const newData = hotels.filter(function (item) {
             const itemData = item.name.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1
         })
         this.setState({
-            data: newData,
+            hotels: newData,
             text: text,
         })
     }
-    deleteData() {
-        this.setState({ text: '', data: '' })
-    }
 
     _renderItem(item) {
-        const { navigate } = this.props.navigation
+        const { navigate } = this.props.navigation;
 
         return (
             <TouchableWithoutFeedback onPress={() => navigate('DetailsHotel', { hotel: item })} >
                 <View style={styles.container_item}>
-                    <Image style={{ height: 150 }} source={{ uri: item.image }}></Image>
+                    <Image style={{ height: 150 }} source={{ uri: item.images[0] }}></Image>
                     <Text style={styles.name_hotel}>{item.name}</Text>
                     <View style={styles.stars}>
                         <StarRating
@@ -88,6 +93,10 @@ export default class ListHotelsComponent extends Component {
     }
 
     render() {
+        const { hotels } = this.props.dataHotels.data;        
+        this.state.hotels = hotels;
+        
+
         return (
             <View style={styles.container}>
                 <View style={styles.searchSection}>
@@ -106,7 +115,8 @@ export default class ListHotelsComponent extends Component {
                 </View>
                 <FlatList
                     renderItem={({ item }) => this._renderItem(item)}
-                    data={this.state.data}
+                    data={this.state.hotels}
+                    keyExtractor={item => item._id}
                     SeparatorComponent={() => <View style={{ width: 5 }} />}
                 />
             </View>
@@ -150,3 +160,17 @@ const styles = StyleSheet.create({
         color: '#424242',
     },
 });
+
+const mapStateToProps = state => {
+    return {
+        dataHotels: state.dataHotels
+    }
+}
+
+const mapDispatchProps = dispatch => {
+    return {
+        fetchData: () => dispatch(fetchData())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchProps)(ListHotelsComponent);

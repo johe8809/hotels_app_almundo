@@ -12,12 +12,13 @@ import ListHotelsComponent from './components/ListHotelsComponent';
 
 
 
+
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false
-    }
+    }    
   }
 
   static navigationOptions = {
@@ -39,7 +40,7 @@ export default class App extends Component {
       <View style = { styles.container }>
         <SideMenu menu = { null } isOpen={ this.state.isOpen } onChange={ (isOpen) => this.updateMenu(isOpen) }>
           <Header toggle = { this.toggle.bind(this) } />
-          <ListHotelsComponent navigation = { this.props.navigation } />
+          <ListHotelsComponent navigation={this.props.navigation} />
         </SideMenu>
       </View>
     );

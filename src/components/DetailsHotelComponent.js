@@ -6,7 +6,7 @@ import {
     FlatList,
     Image,
     TextInput,
-    TouchableHighlight
+    TouchableNativeFeedback
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
 
@@ -30,7 +30,7 @@ export default class DetailsHotelComponent extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <TouchableHighlight
+                    <TouchableNativeFeedback
                         style={styles.closeButton}
                         onPress={() => goBack()}
                     >
@@ -39,7 +39,7 @@ export default class DetailsHotelComponent extends Component {
                             color="white"
                             size={25}
                         />
-                    </TouchableHighlight>
+                    </TouchableNativeFeedback>
                     <Text style={ styles.text_header }>Lista de hoteles</Text>
                 </View>
                 <View style={styles.container_item}>

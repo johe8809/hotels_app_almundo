@@ -15,7 +15,7 @@ const Header = props => (
         <TouchableNativeFeedback onPress = {() => props.toggle()} >
             <Icon name="bars" color="white" size={25} />
         </TouchableNativeFeedback>
-        <Text style={{ fontWeight: 'bold', color: '#fff'}}>HOTELS APP</Text>
+        <Text style={styles.text_header}>HOTELS APP</Text>
     </View>
 
 )
@@ -25,11 +25,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 60,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
         backgroundColor: '#ea6422',
         width: '100%',
         paddingLeft: 15,
         paddingRight: 15
+    },
+    text_header: {
+        fontWeight: 'bold', 
+        color: '#fff',
+        paddingLeft: 30
     }
 })
 

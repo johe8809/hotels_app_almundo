@@ -18,7 +18,7 @@ class App extends Component {
     render() {
         return (
             <Navigation
-                navigation = {addNavigationHelpers({
+                navigation={addNavigationHelpers({
                     dispatch: this.props.dispatch,
                     state: this.props.nav
                 })}
@@ -29,7 +29,7 @@ class App extends Component {
 
 const store = getStore(reducer);
 
-const AppIndex = connect(state => ({nav: state.nav}))(App);
+const AppIndex = connect(state => ({ nav: state.nav }))(App);
 
 export default Index = () => {
     return (
