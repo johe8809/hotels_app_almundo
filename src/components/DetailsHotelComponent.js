@@ -9,8 +9,9 @@ import {
     TouchableNativeFeedback
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
+import MapView from 'react-native-maps';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default class DetailsHotelComponent extends Component {
@@ -40,7 +41,7 @@ export default class DetailsHotelComponent extends Component {
                             size={25}
                         />
                     </TouchableNativeFeedback>
-                    <Text style={ styles.text_header }>Lista de hoteles</Text>
+                    <Text style={styles.text_header}>{params.hotel.name}</Text>
                 </View>
                 <View style={styles.container_item}>
                     <Text style={styles.name_hotel}>{params.hotel.name}</Text>
@@ -48,12 +49,21 @@ export default class DetailsHotelComponent extends Component {
                         <StarRating
                             disabled={false}
                             maxStars={5}
-                            rating={params.hotel.stars}
+                            rating={parseInt(params.hotel.stars)}
                             starSize={25}
                             starColor={'#fec401'}
                         />
                     </View>
                 </View>
+                <MapView
+                    style={styles.map}
+                    initialRegion={{
+                        latitude: 37.78825,
+                        longitude: -122.4324,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                />
             </View>
         )
     }
@@ -93,5 +103,9 @@ const styles = StyleSheet.create({
         width: 50,
         marginLeft: 10,
         marginBottom: 15,
+    },
+    map: {
+        width: 400,
+        height: 200,
     }
 });

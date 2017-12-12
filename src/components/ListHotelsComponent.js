@@ -14,34 +14,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { fetchData } from '../actions/actions';
 import { connect } from 'react-redux';
 
-// const hotels = [
-//     {
-//         name: "Hotel Emperador 2",
-//         stars: 3,
-//         image: "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg",
-//         // images: [
-//         //     "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg"
-//         // ],
-//         price: "1596"
-//     },
-//     {
-//         name: "Hotel Intercontinental",
-//         stars: 5,
-//         image: "https://e.otcdn.com/headers/ilusion/img/hoteles_destinia.jpg",
-//         // images: [
-//         //     "https://telefono-gratis.com/wp-content/uploads/2017/12/Tel%C3%A9fono-Gratuito-de-Trivago.jpg"
-//         // ],
-//         price: "2500"
-//     }
-// ];
-
-
 
 class ListHotelsComponent extends Component {
     constructor(props) {
         super(props);
-        
-        
+
         this.state = {
             text: '',
             hotels: []
@@ -56,8 +33,8 @@ class ListHotelsComponent extends Component {
         this.props.fetchData();
     }
 
-    filter(text) {        
-        const { hotels } = this.props.dataHotels.data;        
+    filter(text) {
+        const { hotels } = this.props.dataHotels.data;
         const newData = hotels.filter(function (item) {
             const itemData = item.name.toUpperCase()
             const textData = text.toUpperCase()
@@ -76,15 +53,23 @@ class ListHotelsComponent extends Component {
             <TouchableWithoutFeedback onPress={() => navigate('DetailsHotel', { hotel: item })} >
                 <View style={styles.container_item}>
                     <Image style={{ height: 150 }} source={{ uri: item.images[0] }}></Image>
-                    <Text style={styles.name_hotel}>{item.name}</Text>
-                    <View style={styles.stars}>
-                        <StarRating
-                            disabled={false}
-                            maxStars={5}
-                            rating={item.stars}
-                            starSize={25}
-                            starColor={'#fec401'}
-                        />
+                    <View style={styles.container_text}>
+                        <View>
+                            <Text style={styles.name_hotel}>{item.name}</Text>
+                            <View style={styles.stars}>
+                                <StarRating
+                                    disabled={false}
+                                    maxStars={5}
+                                    rating={parseInt(item.stars)}
+                                    starSize={25}
+                                    starColor={'#fec401'}
+                                />
+                            </View>
+                        </View>
+                        <View>
+                            <Text style={styles.precio_noche}>Precio por noche</Text>
+                            <Text style={styles.price_value}>{item.price}</Text>
+                        </View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -93,9 +78,9 @@ class ListHotelsComponent extends Component {
     }
 
     render() {
-        const { hotels } = this.props.dataHotels.data;        
+        const { hotels } = this.props.dataHotels.data;
         this.state.hotels = hotels;
-        
+
 
         return (
             <View style={styles.container}>
@@ -134,9 +119,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         margin: 5
     },
+    container_text: {
+        justifyContent: 'space-between',
+        flex: 1,
+        flexDirection: 'row',
+    },
     name_hotel: {
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 14,
         marginLeft: 10,
         marginTop: 10
     },
@@ -144,6 +134,16 @@ const styles = StyleSheet.create({
         width: 50,
         marginLeft: 10,
         marginBottom: 15,
+    },
+    precio_noche: {
+        fontSize: 10,
+        marginRight: 10,
+        marginTop: 10
+    },
+    price_value: {
+        color: '#fec401',
+        fontSize: 25,
+        fontWeight: 'bold'
     },
     searchSection: {
         flexDirection: 'row',
