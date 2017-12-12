@@ -9,7 +9,7 @@ import {
     TouchableNativeFeedback
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -18,9 +18,7 @@ export default class DetailsHotelComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            measuresTitle: 0,
-            measuresSeason: 0,
-            currentSeason: 1
+            marker: { title: "Hotel Intercontinental", description: "El mejor lugar para descansar" }
         }
     }
 
@@ -54,18 +52,39 @@ export default class DetailsHotelComponent extends Component {
                             starColor={'#fec401'}
                         />
                     </View>
+                    <View style={styles.text_address}>
+                        <Text>
+                            <Icon
+                                name="map-marker"
+                                color="gray"
+                                size={25}
+
+                            />
+                            {'   ' + params.hotel.address}
+                        </Text>
+                    </View>
                 </View>
-                <View style={{flex:1, alignSelf: 'stretch'}}>
+                <View style={{ flex: 1, alignSelf: 'stretch' }}>
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
                         initialRegion={{
-                            latitude: 37.78825,
-                            longitude: -122.4324,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
+                            latitude: parseFloat(params.hotel.latitude),
+                            longitude: parseFloat(params.hotel.longitude),
+                            latitudeDelta: 0.004757,
+                            longitudeDelta: 0.006866,
                         }}
-                    />
+                        showsUserLocation={true}
+                        showsMyLocationButton={false}
+                        zoomEnabled={true}
+                    >
+                        <MapView.Marker
+                            coordinate={{ latitude: parseFloat(params.hotel.latitude), longitude: parseFloat(params.hotel.longitude) }}
+                            title={params.hotel.name}
+                            description={params.hotel.address}
+                        />
+
+                    </MapView>
                 </View>
             </View>
         )
@@ -100,12 +119,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
         marginLeft: 10,
-        marginTop: 10
+        marginTop: 5
     },
     stars: {
         width: 50,
         marginLeft: 10,
-        marginBottom: 15,
+        marginBottom: 5,
+    },
+    text_address: {
+        marginLeft: 25,
+        marginBottom: 5,
     },
     map: {
         top: 0,

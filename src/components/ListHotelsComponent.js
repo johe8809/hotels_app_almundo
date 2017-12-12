@@ -33,17 +33,10 @@ class ListHotelsComponent extends Component {
         this.props.fetchData();
     }
 
-    filter(text) {
-        const { hotels } = this.props.dataHotels.data;
-        const newData = hotels.filter(function (item) {
-            const itemData = item.name.toUpperCase()
-            const textData = text.toUpperCase()
-            return itemData.indexOf(textData) > -1
-        })
+    _filterData(text) {
         this.setState({
-            hotels: newData,
-            text: text,
-        })
+            text: text
+        });
     }
 
     _renderItem(item) {
@@ -67,7 +60,7 @@ class ListHotelsComponent extends Component {
                             </View>
                         </View>
                         <View>
-                            <Text style={styles.precio_noche}>Precio por noche</Text>
+                            <Text style={styles.price_night}>Precio por noche</Text>
                             <Text style={styles.price_value}>{item.price}</Text>
                         </View>
                     </View>
@@ -78,8 +71,12 @@ class ListHotelsComponent extends Component {
     }
 
     render() {
-        const { hotels } = this.props.dataHotels.data;
-        this.state.hotels = hotels;
+        const dataFilter = this.state.text
+            ? this.props.dataHotels.data.hotels.filter(item => {
+                return item.name.indexOf(this.state.text) > -1;
+            })
+            : this.props.dataHotels.data.hotels;
+        const dataSource = dataFilter;
 
 
         return (
@@ -87,7 +84,7 @@ class ListHotelsComponent extends Component {
                 <View style={styles.searchSection}>
                     <TextInput
                         value={this.state.text}
-                        onChangeText={(text) => this.filter(text)}
+                        onChangeText={this._filterData.bind(this)}
                         style={styles.input}
                     >
                     </TextInput>
@@ -100,7 +97,7 @@ class ListHotelsComponent extends Component {
                 </View>
                 <FlatList
                     renderItem={({ item }) => this._renderItem(item)}
-                    data={this.state.hotels}
+                    data={dataSource}
                     keyExtractor={item => item._id}
                     SeparatorComponent={() => <View style={{ width: 5 }} />}
                 />
@@ -135,14 +132,15 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginBottom: 15,
     },
-    precio_noche: {
+    price_night: {
         fontSize: 10,
         marginRight: 10,
         marginTop: 10
     },
     price_value: {
         color: '#fec401',
-        fontSize: 25,
+        fontSize: 22,
+        marginRight: 10,
         fontWeight: 'bold'
     },
     searchSection: {
