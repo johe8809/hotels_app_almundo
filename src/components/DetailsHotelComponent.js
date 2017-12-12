@@ -9,7 +9,7 @@ import {
     TouchableNativeFeedback
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
-import MapView from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -55,15 +55,18 @@ export default class DetailsHotelComponent extends Component {
                         />
                     </View>
                 </View>
-                <MapView
-                    style={styles.map}
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                />
+                <View style={{flex:1, alignSelf: 'stretch'}}>
+                    <MapView
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.map}
+                        initialRegion={{
+                            latitude: 37.78825,
+                            longitude: -122.4324,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                    />
+                </View>
             </View>
         )
     }
@@ -105,7 +108,10 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     map: {
-        width: 400,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         height: 200,
     }
 });
