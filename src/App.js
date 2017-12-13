@@ -25,21 +25,21 @@ export default class App extends Component {
     header: null
   }
 
-  toggle() {
+  _toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
 
-  updateMenu(isOpen) {
+  _updateMenu(isOpen) {
     this.setState({ isOpen });
   }
 
   render() {
     return (
       <View style = { styles.container }>
-        <SideMenu menu = { null } isOpen={ this.state.isOpen } onChange={ (isOpen) => this.updateMenu(isOpen) }>
-          <Header toggle = { this.toggle.bind(this) } />
+        <SideMenu menu = { null } isOpen={ this.state.isOpen } onChange={ (isOpen) => this._updateMenu(isOpen) }>
+          <Header toggle = { this._toggle.bind(this) } />
           <ListHotelsComponent navigation={this.props.navigation} />
         </SideMenu>
       </View>

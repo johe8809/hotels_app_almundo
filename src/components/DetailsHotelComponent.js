@@ -6,25 +6,36 @@ import {
     FlatList,
     Image,
     TextInput,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
+    Dimensions
 } from 'react-native';
 import StarRating from 'react-native-star-rating';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Swiper from 'react-native-swiper';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+const { width } = Dimensions.get('window');
+
+const Slider = props => (
+    <View style={styles.container_slider}>
+        <Image style={styles.image_slider} source={{ uri: props.uri }} />
+    </View>
+)
 
 export default class DetailsHotelComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            marker: { title: "Hotel Intercontinental", description: "El mejor lugar para descansar" }
+            imagesSlider: []
         }
     }
 
     render() {
         const { params } = this.props.navigation.state;
-        const { goBack } = this.props.navigation
+        const { goBack } = this.props.navigation;
+
+        this.state.imagesSlider = params.hotel.images;
 
         return (
             <View style={styles.container}>
@@ -63,8 +74,6 @@ export default class DetailsHotelComponent extends Component {
                             {'   ' + params.hotel.address}
                         </Text>
                     </View>
-                </View>
-                <View style={{ flex: 1, alignSelf: 'stretch' }}>
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
@@ -83,8 +92,21 @@ export default class DetailsHotelComponent extends Component {
                             title={params.hotel.name}
                             description={params.hotel.address}
                         />
-
                     </MapView>
+                </View>
+                <View style={{ flex: 1, marginBottom: 20 }}>
+                    <Swiper
+                        autoplay
+                        height={240}
+                    >
+                        {
+                            this.state.imagesSlider.map((item, i) => <Slider
+                                uri={item}
+                                key={i}
+                            />)
+                        }
+
+                    </Swiper>
                 </View>
             </View>
         )
@@ -136,5 +158,13 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         height: 200,
+    },
+    container_slider: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    image_slider: {
+        flex: 1,
+        width
     }
 });

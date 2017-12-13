@@ -39,6 +39,10 @@ class ListHotelsComponent extends Component {
         });
     }
 
+    _clearData() {
+        this.setState({ text: '', data: '' })
+    }
+
     _renderItem(item) {
         const { navigate } = this.props.navigation;
 
@@ -82,18 +86,30 @@ class ListHotelsComponent extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.searchSection}>
+                    {!this.state.text ?
+                        <Icon
+                            name="search"
+                            color="grey"
+                            size={18}
+                            style={styles.searchIcon}
+                        />
+                        : null}
                     <TextInput
                         value={this.state.text}
                         onChangeText={this._filterData.bind(this)}
                         style={styles.input}
                     >
                     </TextInput>
-                    <Icon
-                        name="search"
-                        color="grey"
-                        size={18}
-                        style={styles.searchIcon}
-                    />
+                    {this.state.text ?
+                        <TouchableWithoutFeedback onPress={() => this._clearData()}>
+                            <Icon
+                                name="times-circle"
+                                color="grey"
+                                size={18}
+                                style={styles.iconInputClose}
+                            />
+                        </TouchableWithoutFeedback>
+                        : null}
                 </View>
                 <FlatList
                     renderItem={({ item }) => this._renderItem(item)}
@@ -150,13 +166,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     searchIcon: {
-        padding: 10
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        backgroundColor: 'transparent',
+        zIndex: 1
     },
     input: {
         flex: 1,
         backgroundColor: '#fff',
         color: '#424242',
     },
+    iconInputClose: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        backgroundColor: 'transparent',
+        zIndex: 1
+    }
 });
 
 const mapStateToProps = state => {
