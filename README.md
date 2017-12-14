@@ -43,7 +43,7 @@ react-native run-android
 
 ```
 
-- Si se presenta otro error intentar solucionarlo ejecutando `npm clean cache` y luego `react-native run-android`
+- Si se presenta otro error intentar solucionarlo ejecutando `npm cache clean` y luego `react-native run-android`
 - Si se presenta otro error intentar solucionarlo: ir a la carpera de `android/` y ejecutar: si esta en un mac `./gradlew clean` o si esta en windows `gradlew clean`
   y luego ejecutar el comando `react-native run-android` en la raiz del proyecto.
 
